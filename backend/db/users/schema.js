@@ -10,33 +10,9 @@ const UserSchema = new mongoose.Schema({
   },
   email: String,
   password: String,
-  roles: [String],
-  profile: {
-    firstName: {
-      type: String,
-      required: false,
-    },
-    lastName: {
-      type: String,
-      required: false,
-    },
-    companyName: {
-      type: String,
-      required: false,
-    },
-    about: {
-      type: String,
-      required: false,
-    },
-  },
-  membership: mongoose.Schema.Types.Mixed,
-  followees: [mongoose.Types.ObjectId],
-  contributionCount: {
-    type: Number,
-    default: 0,
-  },
-  pinCount: Number,
-  commentsCount: { type: Number, default: 0 }
+  username: String,
+  memo: String,
+  country: String
 }, { timestamps: true })
 
 UserSchema.methods = {

@@ -10,8 +10,10 @@ app.use(express.json())
 
 // Headers for bypassing CORS policy and allowing communications between domains
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
-  res.header("Access-Control-Allow-Credentials", "true")
+  // res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
+  // res.header("Access-Control-Allow-Credentials", "true")
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
   res.header("Access-Control-Allow-Origin", "*")
   next()
 })
@@ -38,18 +40,20 @@ const start = async () => {
       const db = mongoose.connection
 
       db.once("open", () => {
-        app.use("/", mainRouter)
-
+        app.use("/", mainRouter);
       })
 
       // Mongoose Connection Error
       db.on("error", (err) => {
-        logger.error({ message: "MongoDb connection has died. We did everything we could", data: err })
+        app.use("/", mainRouter);
+
+        console.log({ message: "MongoDb connection has died. We did everything we could", data: err })
       })
     })
 
     mongoose.connection.on("error", (err) => {
-      logger.error({ message: "MongoDB is not ready for a serious relationship", data: err })
+      app.use("/", mainRouter);
+      console.error({ message: "MongoDB is not ready for a serious relationship", data: err })
     })
 
 
